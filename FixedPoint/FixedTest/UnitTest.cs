@@ -39,7 +39,7 @@ namespace FixedTest
 
             var f1 = new Fixed<Q8_24>(x);
             var f2 = new Fixed<Q8_24>(y);
-            var actual = f1.Add(f2).GetRepresentedNumber();
+            var actual = (f1+f2).ToDouble();
             
             Assert.Equal(expected,actual);
         }
@@ -54,7 +54,7 @@ namespace FixedTest
 
             var f1 = new Fixed<Q8_24>(x);
             var f2 = new Fixed<Q8_24>(y);
-            var actual = f1.Subtract(f2).GetRepresentedNumber();
+            var actual = (f1 - f2).ToDouble();
             
             Assert.Equal(expected,actual);
         }
@@ -70,7 +70,7 @@ namespace FixedTest
             var f1 = new Fixed<Q8_24>(x);
             var f2 = new Fixed<Q8_24>(y);
             
-            var actual = f1.Multiply(f2).GetRepresentedNumber();
+            var actual = f1.Multiply(f2).ToDouble();
             Assert.Equal(expected,actual);
         }
         
@@ -84,12 +84,27 @@ namespace FixedTest
 
             var f1 = new Fixed<Q8_24>(x);
             var f2 = new Fixed<Q8_24>(y);
-            var actual = Math.Round(f1.Divide(f2).GetRepresentedNumber(),1);
+            var actual = Math.Round(f1.Divide(f2).ToDouble(),1);
             
             Assert.Equal(expected,actual);
         }
         
-        
+        [Theory]
+        [InlineData(1, 1)]
+        [InlineData(0, 0)]
+        [InlineData(655, 125)]
+        [InlineData(-200, 125)]
+        [InlineData(245889,100)]
+        public void CompareTestQ8_24(int x, int y)
+        {
+            var expected = GetOverflownInt(x,8).CompareTo(GetOverflownInt(y,8));
+            
+            var f1 = new Fixed<Q8_24>(x);
+            var f2 = new Fixed<Q8_24>(y);
+            var actual = f1.CompareTo(f2);
+            
+            Assert.Equal(expected,actual);
+        }
         #endregion
 
         #region Q16_16
@@ -103,7 +118,7 @@ namespace FixedTest
             
             var f1 = new Fixed<Q16_16>(x);
             var f2 = new Fixed<Q16_16>(y);
-            var actual = f1.Add(f2).GetRepresentedNumber();
+            var actual = f1.Add(f2).ToDouble();
             
             Assert.Equal(expected,actual);
         }
@@ -118,7 +133,7 @@ namespace FixedTest
             
             var f1 = new Fixed<Q16_16>(x);
             var f2 = new Fixed<Q16_16>(y);
-            var actual = f1.Subtract(f2).GetRepresentedNumber();
+            var actual = f1.Subtract(f2).ToDouble();
             
             Assert.Equal(expected,actual);
         }
@@ -133,7 +148,7 @@ namespace FixedTest
             
             var f1 = new Fixed<Q16_16>(x);
             var f2 = new Fixed<Q16_16>(y);
-            var actual = f1.Multiply(f2).GetRepresentedNumber();
+            var actual = f1.Multiply(f2).ToDouble();
             
             Assert.Equal(expected,actual);
         }
@@ -148,7 +163,24 @@ namespace FixedTest
 
             var f1 = new Fixed<Q16_16>(x);
             var f2 = new Fixed<Q16_16>(y);
-            var actual = Math.Round(f1.Divide(f2).GetRepresentedNumber(),1);
+            var actual = Math.Round(f1.Divide(f2).ToDouble(),1);
+            
+            Assert.Equal(expected,actual);
+        }
+        
+        [Theory]
+        [InlineData(1, 1)]
+        [InlineData(0, 0)]
+        [InlineData(655, 125)]
+        [InlineData(-200, 125)]
+        [InlineData(245889,100)]
+        public void CompareTestQ16_16(int x, int y)
+        {
+            var expected = GetOverflownInt(x,16).CompareTo(GetOverflownInt(y,16));
+            
+            var f1 = new Fixed<Q16_16>(x);
+            var f2 = new Fixed<Q16_16>(y);
+            var actual = f1.CompareTo(f2);
             
             Assert.Equal(expected,actual);
         }
@@ -166,7 +198,7 @@ namespace FixedTest
             
             var f1 = new Fixed<Q24_8>(x);
             var f2 = new Fixed<Q24_8>(y);
-            var actual = f1.Add(f2).GetRepresentedNumber();
+            var actual = f1.Add(f2).ToDouble();
             
             Assert.Equal(expected,actual);
         }
@@ -180,7 +212,7 @@ namespace FixedTest
             
             var f1 = new Fixed<Q24_8>(x);
             var f2 = new Fixed<Q24_8>(y);
-            var actual = f1.Subtract(f2).GetRepresentedNumber();
+            var actual = f1.Subtract(f2).ToDouble();
             
             Assert.Equal(expected,actual);
         }
@@ -195,7 +227,7 @@ namespace FixedTest
             
             var f1 = new Fixed<Q24_8>(x);
             var f2 = new Fixed<Q24_8>(y);
-            var actual = f1.Multiply(f2).GetRepresentedNumber();
+            var actual = f1.Multiply(f2).ToDouble();
             
             Assert.Equal(expected,actual);
         }
@@ -210,11 +242,82 @@ namespace FixedTest
 
             var f1 = new Fixed<Q24_8>(x);
             var f2 = new Fixed<Q24_8>(y);
-            var actual = Math.Round(f1.Divide(f2).GetRepresentedNumber(),1);
+            var actual = Math.Round(f1.Divide(f2).ToDouble(),1);
             
             Assert.Equal(expected,actual);
         }
         
+        [Theory]
+        [InlineData(1, 1)]
+        [InlineData(0, 0)]
+        [InlineData(655, 125)]
+        [InlineData(-200, 125)]
+        [InlineData(245889,100)]
+        public void CompareTestQ24_8(int x, int y)
+        {
+            var expected = GetOverflownInt(x,24).CompareTo(GetOverflownInt(y,24));
+            
+            var f1 = new Fixed<Q24_8>(x);
+            var f2 = new Fixed<Q24_8>(y);
+            var actual = f1.CompareTo(f2);
+            
+            Assert.Equal(expected,actual);
+        }
         #endregion
+
+        #region converting
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(265)]
+        [InlineData(1265235)]
+        public void ConvertTestQ8_24ToQ16_16(int x)
+        {
+            var expected = GetOverflownInt(GetOverflownInt(x, 8), 16);
+            
+            var f1 = new Fixed<Q8_24>(x);
+            var f2 = f1.ConvertTo<Q16_16>();
+            var actual = f2.ToDouble();
+            
+            Assert.Equal(expected,actual);
+            
+        }
+        
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-265)]
+        [InlineData(1265235)]
+        public void ConvertTestQ24_8ToQ16_16(int x)
+        {
+            var expected = GetOverflownInt(GetOverflownInt(x, 24), 16);
+            
+            var f1 = new Fixed<Q24_8>(x);
+            var f2 = f1.ConvertTo<Q16_16>();
+            var actual = f2.ToDouble();
+            
+            Assert.Equal(expected,actual);
+            
+        }
+        
+        [Theory]
+        [InlineData(0)]
+        [InlineData(265)]
+        [InlineData(1265235)]
+        [InlineData(-15465)]
+        public void ConvertTestQ8_24ToQ24_8(int x)
+        {
+            var expected = GetOverflownInt(GetOverflownInt(x, 8), 24);
+            
+            var f1 = new Fixed<Q8_24>(x);
+            var f2 = f1.ConvertTo<Q24_8>();
+            var actual = f2.ToDouble();
+            
+            Assert.Equal(expected,actual);
+            
+        }
+
+        #endregion
+        
+        
     }
 }

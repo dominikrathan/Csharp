@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using BenchmarkDotNet.Running;
 using Cuni.Arithmetics.FixedPoint;
 
 namespace FixedPointApiTest {
 	class Program {
 		static void Main(string[] args) {
+
+			#region Operations
+
 			Console.WriteLine("Q24_8:");
 			{
 				var f1 = new Fixed<Q24_8>(3);
@@ -43,8 +46,6 @@ namespace FixedPointApiTest {
 				Console.WriteLine($"625 / 1000: {f3}");
 			}
 
-			//
-
 			Console.WriteLine();
 			Console.WriteLine("Q16_16:");
 			{
@@ -74,8 +75,6 @@ namespace FixedPointApiTest {
 				Console.WriteLine($"625 / 1000: {f3}");
 			}
 
-			//
-
 			Console.WriteLine();
 			Console.WriteLine("Q8_24:");
 			{
@@ -101,7 +100,32 @@ namespace FixedPointApiTest {
 				f2 = new Fixed<Q8_24>(1000);
 				f3 = f1.Divide(f2);
 				Console.WriteLine($"625 / 1000: {f3}");
+				
 			}
+
+			#endregion
+			
+			#region Gaussian Elimination
+
+			Console.WriteLine();
+			Console.WriteLine("Gaussian elimination:");
+			
+			Console.WriteLine();
+			Console.WriteLine("Q8_24:");
+
+			var matrixArr = RandomArray.GetRandomMatrixArray(10,100);
+			var matrix = new Matrix(matrixArr,10);
+			Console.WriteLine("Original matrix:");
+			matrix.Print();
+			
+			Console.WriteLine("After elimination:");
+			matrix.EliminateRows();
+			matrix.Print();
+
+			#endregion
+			
+			var summary = BenchmarkRunner.Run<FixedTest>();
+
 		}
 	}
 }
