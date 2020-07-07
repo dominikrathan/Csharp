@@ -3,7 +3,7 @@
 Text převzat ze zadání práce na kurzu NPRG035 na MFF UK.
 Autorem textu je Pavel Ježek (https://d3s.mff.cuni.cz/legacy/~jezek/).
 
-##Kódování
+## Kódování
 
 ### Formát vstupu a stavba stromu
 Napište program, který dostane jako argument jméno vstupního souboru. Přečte všechna data ze vstupního souboru, na jejich základě postaví Huffmanův strom a s jeho pomocí provede kompresi vstupních dat. Výsledek je vypsán v binárním formátu do výstupního souboru, jehož jméno dostaneme tak, že k názvu vstupního souboru přidáme příponu .huff. Pokud nedostane právě jeden argument, vypište na std. výstup řetězec Argument Error. Pokud vstupní nebo výstupní soubor nejde z jakéhokoli důvodu otevřít nebo z něj nelze číst (resp. do něj zapisovat), vypište na std. výstup řetězec File Error. Vstupní soubor může mít libovolný formát (tedy může být klidně binární). Pro upřesnění: Znakem od této chvíle dál myslíme nějaký symbol reprezentující 1 byte (dívejte se tedy na data spíše jako na posloupnost bytů než na text).
@@ -40,7 +40,7 @@ Například sekvence 1101 0010 0001 1010 111 (mezery v sekvenci slouží pouze k
 
 Důležitá poznámka: Váš program by měl být bez problémů schopen pracovat minimálně s 1 TB (přesněji tedy 1 TiB) vstupními soubory. K dispozici máte ovšem pouze O(1) paměti.
 
-##Dekódování
+## Dekódování
 
 Napište program, který dostane jako argument jméno komprimovaného souboru (s příponou ".huff". Tento soubor je kódován způsobem popsaným v úloze Huffman II (viz též níže). Vašim úkolem je načíst z tohoto souboru Huffmanův strom a na jeho základě provést dekompresi dat, která za ním následují. Dekomprimovaná data uložte do výstupního souboru, jehož jméno získáte odtržením přípony ".huff" od názvu vstupního souboru. Pokud nedostane právě jeden argument nebo tento argument není platný (nemá správnou příponu) vypište na std. výstup řetězec "Argument Error". Pokud vstupní nebo výstupní soubor nejde z jakéhokoli důvodu otevřít, nelze číst (resp. do něj zapisovat) nebo vstupní soubor nemá správný formát, vypište na std. výstup řetězec "File Error". Pokud dojde k detekci chyby formátu v průběhu čtení vstupního souboru, je povoleno ponechat rozpracovaný výstupní soubor na disku.
 
